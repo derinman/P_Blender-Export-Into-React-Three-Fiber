@@ -4,7 +4,7 @@ import { Canvas } from 'react-three-fiber'
 import * as THREE from 'three'
 
 import Controls from './Controls'//控制模型oribt
-import Cube from './Cube'
+import BasicPrimitive from './BasicPrimitive'
 
 const CanvasWrapper = styled.div`
   margin: 0px;
@@ -17,7 +17,7 @@ function App() {
   return (
     <CanvasWrapper>
         <Canvas
-          camera={{ position: [0, 0, 4], fov: 69 }}
+          camera={{ position: [0, 0, 15], fov: 69 }}
           onCreated={({ gl, scene }) => {
             scene.background = new THREE.Color('#666')
           }}
@@ -26,7 +26,7 @@ function App() {
           <ambientLight intensity={500} color={'yellow'} />
           <spotLight intensity={10} position={[300, 300, 400]} />
           <Suspense fallback={null}>
-            <Cube />
+            <BasicPrimitive />
           </Suspense>
         </Canvas>
     </CanvasWrapper>
