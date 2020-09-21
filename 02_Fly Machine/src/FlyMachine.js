@@ -16,9 +16,11 @@ function FlyMachine() {
     1.DRACOLoader是針對比較大的3D模型做壓縮的plugins，當我們需要
     考慮到客戶瀏覽的順暢度時，就需要加入這個plugins來幫助檔案的壓縮
 
-    2.在Blender時要將mesh位置歸零，才會以Blender的相對位置匯進來
+    2.在Blender時要將mesh(Ctrl+A)位置歸零，才會以Blender的相對位置匯進來
     
     3.useLoader的第三個參數是optional
+
+    4.Blender裡面的Cursor要注意位置
     */
     
     const gltf  = useLoader(GLTFLoader, Donut, loader => {
