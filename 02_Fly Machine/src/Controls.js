@@ -22,7 +22,7 @@ function Controls({ disable }) {
       ref={ref}
       target={[0, 0, 0]}
       enableDamping
-      enableZoom={false}
+      enableZoom={true}
       enablePan={false}
       dampingFactor={0.05}
       rotateSpeed={0.9}

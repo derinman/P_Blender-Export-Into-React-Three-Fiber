@@ -112,6 +112,8 @@ function FlyMachine() {
                     geometry={nodes.sphere.geometry} 
                     material={materials['gfc main']} 
                 />
+                {/* PROPELLER (螺旋槳忽略)*/}
+                <mesh material={materials['gfc main']} geometry={nodes.propeller_0.geometry} />
             </group>
         );
 }

@@ -7,6 +7,7 @@ import { Canvas } from 'react-three-fiber'
 import Controls from './Controls'//控制模型oribt
 import FlyMachine from './FlyMachine'
 
+import Environment from './Environment'
 
 const CanvasWrapper = styled.div`
   margin: 0px;
@@ -23,7 +24,7 @@ function App() {
           concurrent
           noEvents={false}
           //pixelRatio={window.devicePixelRatio}
-          camera={{ position: [6, 2, 0.1], fov: 69 }}
+          camera={{ position: [0, 5, 0], fov: 69 }}
           gl={{ antialias: true }}
           onCreated={({ gl, scene }) => {
             gl.toneMapping = THREE.ACESFilmicToneMapping
@@ -32,9 +33,11 @@ function App() {
           }}>
           
           <ambientLight intensity={0.33}/>
-        >
-          <Controls/>     
+        
+          <Controls/>
+          
           <Suspense fallback={null}>
+          <Environment />     
             <FlyMachine/>
           </Suspense>
         </Canvas>
