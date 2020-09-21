@@ -4,6 +4,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader'
 
 import Donut from './model/donut.glb'
+import { Plane } from 'three'
 
 function Donuts() {
 
@@ -33,15 +34,30 @@ function Donuts() {
     console.log( 'nodes:',nodes )
     console.log( 'materials:',materials )
 
-    console.log( 'nodes.Scene: ', nodes.Scene)
-    console.log( 'nodes.Camera: ', nodes.Camera)
-    console.log( 'nodes.Light: ', nodes.Light)
+    //console.log( 'nodes.Scene: ', nodes.Scene)
+    //console.log( 'nodes.Camera: ', nodes.Camera)
+    //console.log( 'nodes.Light: ', nodes.Light)
     
-    console.log( 'materials.Brick:', materials.Brick)
-    console.log( 'materials.Condensation:', materials.Condensation)
     
     return (
-            <primitive object={gltf.scene}/>
+            <group>
+                <mesh
+                    geometry={nodes.Donut.geometry}
+                    material={materials.donut}
+                />
+                <mesh
+                    geometry={nodes.Icing.geometry}
+                    material={materials.icing}
+                />
+                <mesh
+                    geometry={nodes.Plane.geometry}
+                    material={materials.CounterTop}
+                />
+                <mesh
+                    geometry={nodes.Plane002.geometry}
+                    material={materials.Brick}
+                />
+            </group>
         );
 
 }

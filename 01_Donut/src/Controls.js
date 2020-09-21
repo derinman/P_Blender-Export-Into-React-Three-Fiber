@@ -22,8 +22,8 @@ function Controls({ disable }) {
       ref={ref}
       target={[0, 0, 0]}
       enableDamping
-      enableZoom={false}
-      enablePan={false}
+      enableZoom={true}
+      enablePan={true}
       dampingFactor={0.05}
       rotateSpeed={0.9}
       // minPolarAngle={Math.PI / 1.9}
