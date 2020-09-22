@@ -1,4 +1,4 @@
-import React ,{useMemo}from 'react'
+import React from 'react'
 import { useLoader } from 'react-three-fiber'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader'
@@ -16,7 +16,7 @@ function Donuts() {
     3.useLoader的第三個參數是optional
     */
     
-    const {gltf}  = useLoader(GLTFLoader, Donut, loader => {
+    const { gltf }  = useLoader(GLTFLoader, Donut, loader => {
         const dracoLoader = new DRACOLoader()
         dracoLoader.setDecoderPath('./model/model')
         loader.setDRACOLoader(dracoLoader)
@@ -37,39 +37,48 @@ function Donuts() {
     //console.log( 'nodes.Camera: ', nodes.Camera)
     //console.log( 'nodes.Light: ', nodes.Light)
     
-
-    
     return (
-        <group>
-        <mesh
+        <group >
+        
+        <mesh  
+            castShadow 
+            receiveShadow     
             geometry={nodes.Plane.geometry}
             material={materials.CounterTop}
         />
-        <mesh
+        
+        <mesh 
+            castShadow 
+            receiveShadow
             geometry={nodes.Wall.geometry}
             material={materials.Brick}
         />
-        <group>
-            <mesh
+        <group >
+            <mesh 
+                castShadow 
+                receiveShadow
                 geometry={nodes.Donut.geometry}
                 material={materials.donut}
             />
-            <mesh
+            <mesh 
+                castShadow 
+                receiveShadow
                 geometry={nodes.Icing.geometry}
                 material={materials.icing}
             />
-            <mesh
+            <mesh 
+                castShadow 
+                receiveShadow
                 geometry={nodes.whitePlate.geometry}
                 material={materials.plate}
             />
         </group>
         <group>
-            <mesh
+            <mesh 
+                castShadow 
+                receiveShadow
                 geometry={nodes.glassPlate.geometry}
                 material={materials.Glass}
-            />
-            <group
-                ref={nodes.Cup}
             />
         </group>
     </group>
