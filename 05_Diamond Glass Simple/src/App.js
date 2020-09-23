@@ -25,9 +25,16 @@ function Diamonds() {
   const { size, viewport, gl, scene, camera, clock } = useThree()
 
   const model = useRef()
+  console.log(model)
+
+  const test = useRef()
+  console.log(test)
+  
   const gltf = useLoader(GLTFLoader, diamondUrl)
   //console.log('gltf: ',gltf);
-  //console.log('gltf.__$[1].geometry: ',gltf.__$[1].geometry);
+  
+  const {nodes} = useLoader(GLTFLoader, diamondUrl)
+  //console.log(nodes)
 
   // Create Fbo and materials
   const [envFbo, backfaceFbo, backfaceMaterial, refractionMaterial] = useMemo(() => {
@@ -46,27 +53,16 @@ function Diamonds() {
   const dummy = useMemo(() => new Object3D(), [])
   //console.log(dummy);
 
-  const diamonds = useMemo(
-    () =>[{position:[0,0,0], factor:1, direction:1, rotation:[0,0,0]}]
-    ,[viewport.width]
-  )
-  //console.log('diamonds: ',diamonds);//[{position:,factor:,direction:,rotation:},{},{},...]
-
   useFrame(() => {
-    
-    diamonds.forEach((data, i) => {
       
-      const t = clock.getElapsedTime()
-      //console.log('t:', t)
+    const t = clock.getElapsedTime()
+    dummy.position.set(0,0,5)
+    dummy.rotation.set( t ,  t , t )//關掉看看
+    dummy.updateMatrix()
+    //console.log(dummy)
 
-      const { rotation, factor } = data
-      dummy.rotation.set(rotation[0] + t * factor, rotation[1] + t * factor, rotation[2] + t * factor)//關掉看看
-      dummy.updateMatrix()
-      //console.log(dummy)
-
-      //結合dummy跟diamonds
-      model.current.setMatrixAt(i, dummy.matrix)
-    })
+    //結合dummy跟diamonds
+    model.current.setMatrixAt(0, dummy.matrix)
     model.current.instanceMatrix.needsUpdate = true//關掉看看，畫面會靜止
 
     //ren背後那張jpg到 fbo
@@ -99,11 +95,13 @@ function Diamonds() {
 
   return (
     //instaceMesh的三個args是geometry material count
-    //attach可以綁定其parent的args
-    <instancedMesh ref={model} args={[null, null, diamonds.length]}>
+    <group>
+    <instancedMesh ref={model} args={[null, null, 1]}>
       <bufferGeometry dispose={false} attach="geometry" {...gltf.__$[1].geometry} />
       <meshBasicMaterial attach="material" />
     </instancedMesh>
+    <mesh ref={test} geometry={nodes.Cylinder.geometry} position={[5,0,5]}/>
+    </group>
   )
 }
 
