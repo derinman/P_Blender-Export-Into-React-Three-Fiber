@@ -19,7 +19,6 @@ const CanvasWrapper = styled.div`
   width: 100vw;
 `;
 
-
 function App() {
   
   softShadows()
