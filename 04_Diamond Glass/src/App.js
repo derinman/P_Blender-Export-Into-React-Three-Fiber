@@ -1,4 +1,4 @@
-import { TextureLoader, WebGLRenderTarget, Object3D, LinearFilter } from 'three'
+import { WebGLRenderTarget, Object3D } from 'three'
 import React, { Suspense, useMemo, useRef } from 'react'
 import { Canvas, useLoader, useThree, useFrame } from 'react-three-fiber'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
@@ -8,12 +8,11 @@ import styled from 'styled-components';
 import BackfaceMaterial from './shader/Backface'
 import RefractionMaterial from './shader/Refraction'
 import diamondUrl from './model/diamond.glb'
-import textureUrl from './imgs/backdrop.jpg'
 
 import Controls from './Controls'
+import Background from './Background'
 
 console.log(diamondUrl)
-console.log(textureUrl)
 
 const CanvasWrapper = styled.div`
   margin: 0px;
@@ -21,22 +20,6 @@ const CanvasWrapper = styled.div`
   height: 100vh;
   width: 100vw;
 `;
-
-function Background() {
-  const { viewport, aspect } = useThree()
-  const texture = useLoader(TextureLoader, textureUrl)
-  useMemo(() => (texture.minFilter = LinearFilter), [texture.minFilter])
-  // Calculates a plane filling the screen similar to background-size: cover
-  const adaptedHeight = 3800 * (aspect > 5000 / 3800 ? viewport.width / 5000 : viewport.height / 3800)
-  const adaptedWidth = 5000 * (aspect > 5000 / 3800 ? viewport.width / 5000 : viewport.height / 3800)
-
-  return (
-    <mesh layers={1} scale={[adaptedWidth, adaptedHeight, 1]}>
-      <planeBufferGeometry attach="geometry" />
-      <meshBasicMaterial attach="material" map={texture} depthTest={false} />
-    </mesh>
-  )
-}
 
 function Diamonds() {
   const { size, viewport, gl, scene, camera, clock } = useThree()
@@ -96,13 +79,17 @@ function Diamonds() {
       })),
     [viewport.width]
   )
-  //console.log(diamonds);
+  //console.log('diamonds: ',diamonds);//[{position:,factor:,direction:,rotation:},{},{},...]
 
   // Render-loop
   useFrame(() => {
     // Update instanced diamonds
     diamonds.forEach((data, i) => {
+      
       const t = clock.getElapsedTime()
+      //console.log('t:', t)
+      
+      {/* Y軸(垂直) */}
       data.position[1] -= (data.factor / 5) * data.direction
       if (data.direction === 1 ? data.position[1] < -50 : data.position[1] > 50)
         data.position = [
@@ -110,14 +97,18 @@ function Diamonds() {
           50 * data.direction,
           data.position[2],
         ]
+      
       const { position, rotation, factor } = data
-      dummy.position.set(position[0], position[1], position[2])
-      dummy.rotation.set(rotation[0] + t * factor, rotation[1] + t * factor, rotation[2] + t * factor)
-      dummy.scale.set(1 + factor, 1 + factor, 1 + factor)
+      dummy.position.set(position[0], position[1], position[2])//關掉看看
+      dummy.rotation.set(rotation[0] + t * factor, rotation[1] + t * factor, rotation[2] + t * factor)//關掉看看
+      dummy.scale.set(1 + factor, 1 + factor, 1 + factor)//關掉看看
       dummy.updateMatrix()
+      //console.log(dummy)
+
+      //結合dummy跟diamonds
       model.current.setMatrixAt(i, dummy.matrix)
     })
-    model.current.instanceMatrix.needsUpdate = true
+    model.current.instanceMatrix.needsUpdate = true//關掉看看
 
     //ren背後那張jpg到 fbo
     // Render env to fbo
@@ -159,13 +150,16 @@ function Diamonds() {
 function App() {
   return (
     <CanvasWrapper>
-    <Canvas camera={{ fov: 50, position: [0, 0, 30] }}>
-      <Controls/>
-      <Suspense fallback={null}>
-        <Background />
-        <Diamonds />
-      </Suspense>
-    </Canvas>
+      <Canvas 
+        //colorManagement
+        camera={{ fov: 50, position: [0, 0, 30] }}
+      >
+        <Controls/>
+        <Suspense fallback={null}>
+          <Background />
+          <Diamonds />
+        </Suspense>
+      </Canvas>
     </CanvasWrapper>
   )
 }
