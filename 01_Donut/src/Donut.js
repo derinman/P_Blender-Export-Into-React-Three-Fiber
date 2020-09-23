@@ -1,12 +1,7 @@
-import React ,{ useMemo, useRef } from 'react'
+import React  from 'react'
 import { useLoader, useThree } from 'react-three-fiber'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader'
-
-import { WebGLRenderTarget, Object3D } from 'three'
-
-import BackfaceMaterial from './shader/Backface'
-import RefractionMaterial from './shader/Refraction'
 
 import Donut from './model/donut.glb'
 
@@ -42,24 +37,6 @@ function Donuts() {
     //console.log( 'nodes.Camera: ', nodes.Camera)
     //console.log( 'nodes.Light: ', nodes.Light)
     
-    const { size, viewport, gl, scene, camera, clock } = useThree()
-    const model = useRef()
-
-    // Create Fbo and materials
-    const [envFbo, backfaceFbo, backfaceMaterial, refractionMaterial] = useMemo(() => {
-    const envFbo = new WebGLRenderTarget(size.width, size.height)
-    const backfaceFbo = new WebGLRenderTarget(size.width, size.height)
-    const backfaceMaterial = new BackfaceMaterial()
-    const refractionMaterial = new RefractionMaterial({
-        envMap: envFbo.texture,
-        backfaceMap: backfaceFbo.texture,
-        resolution: [size.width, size.height],
-    })
-    return [envFbo, backfaceFbo, backfaceMaterial, refractionMaterial]
-    }, [size])
-
-    
-
     return (
     
     <group >
@@ -96,17 +73,7 @@ function Donuts() {
                 material={materials.plate}
             />
         </group>
-        <group>
-            <mesh 
-                castShadow 
-                receiveShadow
-                geometry={nodes.glassPlate.geometry}
-                material={materials.Glass}
-            />
-        </group>
     </group>
-        
-        
         );
 
 }

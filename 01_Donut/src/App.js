@@ -9,7 +9,10 @@ import { softShadows } from "drei"
 import { number } from '@storybook/addon-knobs'
 
 import Controls from './Controls'//控制模型oribt
+
 import Donuts from './Donut'
+import GlassPlate from './GlassPlate'
+
 import Environment from './Environment'
 
 const CanvasWrapper = styled.div`
@@ -62,6 +65,7 @@ function App() {
           <Suspense fallback={null}>
             <Environment />
             <Donuts/>
+            {/*<GlassPlate/>*/}
           </Suspense>
         </Canvas>
     </CanvasWrapper>
