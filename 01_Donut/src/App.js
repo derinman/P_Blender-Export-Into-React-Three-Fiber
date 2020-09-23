@@ -2,9 +2,11 @@ import React, { useRef,Suspense} from 'react';
 import styled from 'styled-components';
 import { useThree, useFrame, Canvas } from 'react-three-fiber'
 
-import { Stars, Sky, TrackballControls } from 'drei'
+import * as THREE from "three";
+
+import { Stars, Sky } from 'drei'
 import { softShadows } from "drei"
-import { withKnobs, number } from '@storybook/addon-knobs'
+import { number } from '@storybook/addon-knobs'
 
 import Controls from './Controls'//控制模型oribt
 import Donuts from './Donut'
@@ -18,7 +20,6 @@ const CanvasWrapper = styled.div`
 `;
 
 
-
 function App() {
   
   softShadows()
@@ -29,7 +30,10 @@ function App() {
           camera={{ position: [0.15, 0.15, 0.15], fov: 69 }}
           colorManagement
           pixelRatio={window.devicePixelRatio}
-          //shadowMap
+          onCreated={({ gl }) => {
+            //gl.shadowMap.enabled = true;
+            //gl.shadowMap.type = THREE.PCFSoftShadowMap;
+          }}
         >
         <Sky
           distance={3000} 
